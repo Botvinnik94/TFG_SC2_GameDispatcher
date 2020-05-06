@@ -8,7 +8,12 @@ from tournamentManager.TournamentManager import HttpTournamentManager
 app = Flask(__name__)
 controller = Controller(HttpRepository(), HttpTournamentManager())
 
-@app.route("/check-tournaments")
+@app.route("/check-tournaments", methods=["PUT"])
 def check_tournaments():
     initialized_tournaments = controller.tournament_initializer()
-    return Response(str(len(initialized_tournaments)), 200)
+    return Response(str(initialized_tournaments), 200)
+
+@app.route("/check-matches", methods=["PUT"])
+def check_matches():
+    matches_started = controller.match_initializer()
+    return Response(str(matches_started), 200)

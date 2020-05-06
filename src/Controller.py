@@ -13,4 +13,11 @@ class Controller:
         tournaments_to_initialize = list(filter(lambda t: now > int(t["startingDate"]), tournaments))
         for tournament in tournaments_to_initialize:
             self.tournament_manager.initialize_tournament(tournament["id"])
-        return tournaments_to_initialize
+        return len(tournaments_to_initialize)
+    
+    def match_initializer(self):
+        matches = self.repository.get_matches("pending")
+        for match in matches:
+            # TODO: send to task queue here
+            self.tournament_manager.start_match(match)
+        return len(matches)
