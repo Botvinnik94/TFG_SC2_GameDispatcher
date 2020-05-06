@@ -1,5 +1,9 @@
 from abc import ABC, abstractmethod
 import requests
+import yaml
+
+with open('config.yaml') as f:
+    config = yaml.load(f, Loader=yaml.FullLoader)
 
 class AbstractRepository(ABC):
 
@@ -15,11 +19,11 @@ class AbstractRepository(ABC):
 class HttpRepository(AbstractRepository):
 
     def get_tournaments(self, status):
-        url = "http://localhost:5001/sc2-arena/us-central1/api"
-        r = requests.get(url, params={ "status": status})
+        url = config["HTTP_REPOSITORY_ENDPOINT"]
+        r = requests.get(url, params={ "status": status })
         return r.json()
 
     def get_matches(self, status):
-        url = "http://localhost:5001/sc2-arena/us-central1/api/matches"
-        r = requests.get(url, params={"status": status})
+        url = config["HTTP_REPOSITORY_ENDPOINT"] + "matches"
+        r = requests.get(url, params={"status": status })
         return r.json()

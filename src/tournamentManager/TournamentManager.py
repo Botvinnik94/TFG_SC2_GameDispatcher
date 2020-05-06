@@ -1,5 +1,9 @@
 from abc import ABC, abstractmethod
 import requests
+import yaml
+
+with open('config.yaml') as f:
+    config = yaml.load(f, Loader=yaml.FullLoader)
 
 class AbstractTournamentManager(ABC):
 
@@ -19,7 +23,7 @@ class AbstractTournamentManager(ABC):
 class HttpTournamentManager(AbstractTournamentManager):
 
     def initialize_tournament(self, tournament_id):
-        url = "http://localhost:5001/sc2-arena/us-central1/private/" + tournament_id + "/initialize"
+        url = config["HTTP_TOURNAMENT_MANAGER_ENDPOINT"] + tournament_id + "/initialize"
         return requests.put(url)
 
     def start_match(self, match):
