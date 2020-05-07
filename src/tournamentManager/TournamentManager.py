@@ -38,5 +38,5 @@ class HttpTournamentManager(AbstractTournamentManager):
         else:
             return response
 
-    def report_match(self, match):
+    def report_match(self, match, game):
         pass

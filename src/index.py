@@ -4,9 +4,17 @@ from Controller import Controller
 from flask import Flask, request, Response
 from repository.Repository import HttpRepository
 from tournamentManager.TournamentManager import HttpTournamentManager
+from GameService.GamePlayer import MockGamePlayer
+from GameService.GameManager import GameManager
 
 app = Flask(__name__)
-controller = Controller(HttpRepository(), HttpTournamentManager())
+
+repository = HttpRepository()
+tournament_manager = HttpTournamentManager()
+game_player = MockGamePlayer()
+game_manager = GameManager(tournament_manager, game_player)
+
+controller = Controller(repository, tournament_manager, game_manager)
 
 @app.route("/check-tournaments", methods=["PUT"])
 def check_tournaments():
