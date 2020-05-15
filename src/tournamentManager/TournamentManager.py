@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 import requests
 import yaml
 
-with open('config.yaml') as f:
+with open('variables.yaml') as f:
     config = yaml.load(f, Loader=yaml.FullLoader)
 
 class AbstractTournamentManager(ABC):

@@ -1,2 +1,0 @@
-HTTP_REPOSITORY_ENDPOINT : 'http://192.168.33.1:5001/sc2-arena/us-central1/api/'
-HTTP_TOURNAMENT_MANAGER_ENDPOINT : 'http://192.168.33.1:5001/sc2-arena/us-central1/private/'

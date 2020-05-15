@@ -25,3 +25,8 @@ def check_tournaments():
 def check_matches():
     matches_started = controller.match_initializer()
     return Response(str(matches_started), 200)
+
+@app.route("/play-match", methods=["PUT"])
+def play_match():
+    data = request.get_json()
+    controller.match_player(data["id"])

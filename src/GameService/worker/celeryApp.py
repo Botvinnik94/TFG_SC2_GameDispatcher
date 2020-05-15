@@ -1,9 +1,12 @@
 from __future__ import absolute_import, unicode_literals
 from celery import Celery
+import yaml
+
+with open('variables.yaml') as f:
+    config = yaml.load(f, Loader=yaml.FullLoader)
 
 app = Celery('taskQueue', 
-             broker='amqp://192.168.33.10',
-             backend='db+postgresql://task:tiger@192.168.33.10/tasks')
+             broker=config['AMQP_URL'])
 
 if __name__ == '__main__':
     app.start()

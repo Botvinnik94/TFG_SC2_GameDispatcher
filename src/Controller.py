@@ -22,10 +22,9 @@ class Controller:
             self.tournament_manager.start_match(match)
         return len(matches)
 
-    def match_player(self):
-        matches = self.repository.get_matches("ongoing")
-        for match in matches:
-            game = self.game_manager.game_from_match()
-            task = self.game_manager.play_game.delay(match, game)
-            match["taskId"] = task.id
-        return len(matches)
+    def match_player(self, match_id):
+        match = self.repository.get_match(match_id)
+        if match["status"] == "ongoing":
+            game = self.game_manager.game_from_match(match)
+            self.game_manager.play_game.delay(match, game)
+        return match_id

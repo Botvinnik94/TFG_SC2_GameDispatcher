@@ -8,7 +8,14 @@ class GameManager:
         self.game_player = game_player
 
     def game_from_match(self, match):
-        pass
+        game = {
+            "participant1": match["players"][0],
+            "participant2": match["players"][1],
+            "winner": -1,
+            "map": "placeholder",
+            "replayURL": "placeholder"
+        }
+        return game
 
     @app.task
     def play_game(self, match, game):
