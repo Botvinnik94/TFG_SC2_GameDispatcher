@@ -26,7 +26,7 @@ class HttpTournamentManager(AbstractTournamentManager):
         url = config["HTTP_TOURNAMENT_MANAGER_ENDPOINT"] + tournament_id + "/initialize"
         response = requests.put(url)
         if response.status_code >= 400:
-            raise Exception(response.status_code + " Error in connection with Tournament Manager HTTP endopoint: " + response.reason)
+            raise Exception(response.status_code + " Error in connection with Tournament Manager HTTP endpoint: " + response.reason)
         else:
             return response
 
@@ -34,9 +34,14 @@ class HttpTournamentManager(AbstractTournamentManager):
         url = config["HTTP_TOURNAMENT_MANAGER_ENDPOINT"] + match["tournamentId"] + "/startMatch"
         response = requests.put(url, data=dict(roundIndex=match["indexId"]["roundIndex"], matchIndex=match["indexId"]["matchIndex"]))
         if response.status_code >= 400:
-            raise Exception(response.status_code + " Error in connection with Tournament Manager HTTP endopoint: " + response.reason)
+            raise Exception(response.status_code + " Error in connection with Tournament Manager HTTP endpoint: " + response.reason)
         else:
             return response
 
     def report_match(self, match, game):
-        pass
+        url = config["HTTP_TOURNAMENT_MANAGER_ENDPOINT"] + match["tournamentId"] + "/reportMatch"
+        response = requests.put(url, data=dict(roundIndex=match["indexId"]["roundIndex"], matchIndex=match["indexId"]["matchIndex"], reportObject=game))
+        if response.status_code >= 400:
+            raise Exception(response.status_code + " Error in connection with Tournament Manager HTTP endpoint: " + response.reason)
+        else:
+            return response
