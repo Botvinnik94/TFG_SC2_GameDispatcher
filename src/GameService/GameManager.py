@@ -1,8 +1,13 @@
 from abc import ABC, abstractmethod
 from .worker.celeryApp import app
+from ..tournamentManager.TournamentManager import HttpTournamentManager
+from GamePlayer import MockGamePlayer
+
+tournament_manager = HttpTournamentManager()
+game_player = MockGamePlayer()
 
 @app.task
-def play_game(tournament_manager, game_player, match, game):
+def play_game(match, game):
     result = game_player.play(game)
     tournament_manager.report_match(match, result)
 

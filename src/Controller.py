@@ -27,7 +27,7 @@ class Controller:
         match = self.repository.get_match(match_id)
         if match["status"] == "ongoing":
             game = game_from_match(match)
-            play_game.delay(self.tournament_manager, self.game_player, match, game)
+            play_game.delay(match, game)
             return match_id
         else:
             return None
