@@ -5,16 +5,14 @@ from flask import Flask, request, Response
 from repository.Repository import HttpRepository
 from tournamentManager.TournamentManager import HttpTournamentManager
 from GameService.GamePlayer import MockGamePlayer
-from GameService.GameManager import GameManager
 
 app = Flask(__name__)
 
 repository = HttpRepository()
 tournament_manager = HttpTournamentManager()
 game_player = MockGamePlayer()
-game_manager = GameManager(tournament_manager, game_player)
 
-controller = Controller(repository, tournament_manager, game_manager)
+controller = Controller(repository, tournament_manager, game_player)
 
 @app.route("/check-tournaments", methods=["PUT"])
 def check_tournaments():
@@ -29,4 +27,8 @@ def check_matches():
 @app.route("/play-match", methods=["PUT"])
 def play_match():
     data = request.get_json()
-    controller.match_player(data["id"])
+    status = controller.match_player(data["id"])
+    if status != None:
+        return Response(status=202)
+    else:
+        return Response(status=404)
