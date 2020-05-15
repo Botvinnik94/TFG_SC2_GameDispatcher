@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from .worker.celeryApp import app
 from ..tournamentManager.TournamentManager import HttpTournamentManager
-from GamePlayer import MockGamePlayer
+from .GamePlayer import MockGamePlayer
 
 tournament_manager = HttpTournamentManager()
 game_player = MockGamePlayer()
