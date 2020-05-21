@@ -17,15 +17,15 @@ class AbstractGamePlayer(ABC):
 class StarcraftGamePlayer(AbstractGamePlayer):
 
     def play(self, bot1, bot2, sc2_map):
-        Bot1 = getattr(importlib.import_module(bot1.name, '.'), bot1.name)
-        Bot2 = getattr(importlib.import_module(bot2.name, '.'), bot2.name)
-        replay_name = bot1.name + bot2.name + str(round(time.time() * 1000))
+        Bot1 = getattr(importlib.import_module('GameService.' + bot1['name']), bot1['name'])
+        Bot2 = getattr(importlib.import_module('GameService.' + bot2['name']), bot2['name'])
+        replay_name = bot1['name'] + bot2['name'] + str(round(time.time() * 1000)) + '.SC2Replay'
         result = run_game(maps.get(sc2_map), [
-                            Bot(self._select_race(bot1.race), Bot1(), bot1.name),
-                            Bot(self._select_race(bot2.race), Bot2(), bot2.name),
+                            Bot(self._select_race(bot1['race']), Bot1(), bot1['name']),
+                            Bot(self._select_race(bot2['race']), Bot2(), bot2['name']),
                         ], realtime=False, save_replay_as=replay_name)
         return {
-            "result": result,
+            "result": self._parse_result(result),
             "replay": replay_name
         }
 
