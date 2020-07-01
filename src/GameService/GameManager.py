@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 from GameService.worker.celeryApp import app
 from tournamentManager.TournamentManager import HttpTournamentManager
 from GameService.GamePlayer import StarcraftGamePlayer
+from random import randint
 import os
 
 import storageService.FirebaseStorageService as storage_service
@@ -9,8 +10,24 @@ import storageService.FirebaseStorageService as storage_service
 tournament_manager = HttpTournamentManager()
 game_player = StarcraftGamePlayer()
 
+maps = [
+    "PortAleksanderLE",
+    "AutomatonLE",
+    "CeruleanFallLE",
+    "ParaSiteLE",
+    "StasisLE",
+    "BlueshiftLE",
+    "KairosJunctionLE"
+]
+
 @app.task
 def play_game(match, game):
+    """
+        Complete logic for playing a game given its match.
+        Gets the scripts from the storage service, plays the game
+        and reports the result
+    """
+
     # Get scripts from storage service
     storage_service.get('GameService/' + game["participant1"]["name"] + '.py', game["participant1"]["script"])
     storage_service.get('GameService/' + game["participant2"]["name"] + '.py', game["participant2"]["script"])
@@ -33,11 +50,12 @@ def play_game(match, game):
 
 
 def game_from_match(match):
+    """Returns a new instance of a game for the match passed"""
     game = {
         "participant1": match["players"][0],
         "participant2": match["players"][1],
         "winner": -1,
-        "map": "PortAleksanderLE",
+        "map": maps[randint(0, len(maps) - 1)],
         "replayURL": "placeholder"
     }
     return game

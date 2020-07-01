@@ -8,15 +8,20 @@ from sc2 import run_game, maps, Race, Result
 from sc2.player import Bot
 
 class AbstractGamePlayer(ABC):
+    """Abstract class for playing a game of StarCraft II"""
 
     @abstractmethod
     def play(self, bot1, bot2, sc2_map):
+        """Executes StarCraft II client and plays the game, returning the result"""
         pass
 
 
 class StarcraftGamePlayer(AbstractGamePlayer):
+    """Class for playing a game of StarCraft II using BurnySC2 library"""
 
     def play(self, bot1, bot2, sc2_map):
+        """Executes StarCraft II client and plays the game, returning the result"""
+
         Bot1 = getattr(importlib.import_module('GameService.' + bot1['name']), bot1['name'])
         Bot2 = getattr(importlib.import_module('GameService.' + bot2['name']), bot2['name'])
         replay_name = bot1['name'] + bot2['name'] + str(round(time.time() * 1000)) + '.SC2Replay'
@@ -54,8 +59,10 @@ class StarcraftGamePlayer(AbstractGamePlayer):
             raise Exception("Invalid race: expected 'Terran', 'Protoss' or 'Zerg', got " + str(race))
 
 class MockGamePlayer(AbstractGamePlayer):
+    """Class for mocking a game of StarCraft II"""
 
     def play(self, bot1, bot2, sc2_map):
+        """Executes StarCraft II client and plays the game, returning the result"""
         time.sleep(20)
         return {
             "result": randint(0, 1),

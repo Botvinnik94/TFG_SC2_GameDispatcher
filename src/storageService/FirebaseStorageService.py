@@ -6,7 +6,8 @@ from firebase_admin import credentials
 from firebase_admin import storage
 
 def _urlToBucketPath (url):
-    """Convert a Firebase HTTP URL to a (bucket, path) tuple, 
+    """
+    Convert a Firebase HTTP URL to a (bucket, path) tuple, 
     Firebase's `refFromURL`.
     """
     bucket_domain = '([A-Za-z0-9.\\-]+)'
@@ -40,6 +41,7 @@ firebase_admin.initialize_app(cred, {
 })
 
 def get(local_path, remote_url):
+    """Saves a file in local filesystem from the Firebase Storage Service"""
     remote_path = _urlToBucketPath(remote_url)[1]
     bucket = storage.bucket()
     blob = bucket.blob(remote_path)
@@ -47,6 +49,7 @@ def get(local_path, remote_url):
     urllib.request.urlretrieve(url, local_path)
 
 def put(local_path, remote_path):
+    """Saves a file in the Firebase Storage Service from the local filesystem"""
     bucket = storage.bucket()
     blob = bucket.blob(remote_path)
     with open(local_path, "rb") as file_obj:
